@@ -12,7 +12,7 @@ func (s *accountService) Deposit(accountID int, amount int) (*entities.Account, 
 
 	account, err := s.accStore.Get(accountID)
 	if err != nil {
-		return &entities.Account{}, errors.ErrDestAccNotFound
+		return &entities.Account{}, err
 	}
 
 	account.Balance += amount

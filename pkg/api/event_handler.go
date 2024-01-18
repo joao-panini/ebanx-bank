@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"strconv"
 
 	erro "github.com/joao-panini/banking-ebanx/pkg/errors"
 )
@@ -32,15 +33,19 @@ func (h *handler) EventHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleDeposit(h *handler, w http.ResponseWriter, req EventRequest) {
+	accountDestIDInt, err := strconv.Atoi(req.AccountDestId)
+	if err != nil {
+		return
+	}
 
-	account, err := h.accService.CreateOrUpdateAccount(req.DestAccountID, int(req.Amount))
+	account, err := h.accService.CreateOrUpdateAccount(accountDestIDInt, int(req.Amount))
 	if err != nil {
 		//never going to return err
 		return
 	}
 
 	var res EventResponse
-	res.DestinationAcc = AccountResponse{
+	res.DestinationAcc = &AccountResponse{
 		ID:      account.ID,
 		Balance: account.Balance,
 	}
@@ -51,8 +56,15 @@ func handleDeposit(h *handler, w http.ResponseWriter, req EventRequest) {
 }
 
 func handleTransfer(h *handler, w http.ResponseWriter, req EventRequest) {
-
-	origin, dest, err := h.accService.Transfer(req.AccountOriginID, req.DestAccountID, int(req.Amount))
+	accOriginIDInt, err := strconv.Atoi(req.AccountOriginID)
+	if err != nil {
+		return
+	}
+	accDestIDInt, err := strconv.Atoi(req.AccountDestId)
+	if err != nil {
+		return
+	}
+	origin, dest, err := h.accService.Transfer(accOriginIDInt, accDestIDInt, int(req.Amount))
 	if err != nil {
 		log.Printf("failed make transfer: %s\n", err.Error())
 		switch {
@@ -75,11 +87,11 @@ func handleTransfer(h *handler, w http.ResponseWriter, req EventRequest) {
 		return
 	}
 	var res EventResponse
-	res.DestinationAcc = AccountResponse{
+	res.DestinationAcc = &AccountResponse{
 		ID:      dest.ID,
 		Balance: dest.Balance,
 	}
-	res.OriginAcc = AccountResponse{
+	res.OriginAcc = &AccountResponse{
 		ID:      origin.ID,
 		Balance: origin.Balance,
 	}
@@ -89,8 +101,11 @@ func handleTransfer(h *handler, w http.ResponseWriter, req EventRequest) {
 }
 
 func handleWithdraw(h *handler, w http.ResponseWriter, req EventRequest) {
-
-	originAcc, err := h.accService.Withdraw(req.AccountOriginID, int(req.Amount))
+	accOriginIDInt, err := strconv.Atoi(req.AccountOriginID)
+	if err != nil {
+		return
+	}
+	originAcc, err := h.accService.Withdraw(accOriginIDInt, int(req.Amount))
 	if err != nil {
 		log.Printf("failed make withdraw: %s\n", err.Error())
 		switch {
@@ -111,7 +126,7 @@ func handleWithdraw(h *handler, w http.ResponseWriter, req EventRequest) {
 	}
 	var res EventResponse
 
-	res.OriginAcc = AccountResponse{
+	res.OriginAcc = &AccountResponse{
 		ID:      originAcc.ID,
 		Balance: originAcc.Balance,
 	}

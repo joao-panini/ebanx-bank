@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/joao-panini/banking-ebanx/pkg/entities"
+	erro "github.com/joao-panini/banking-ebanx/pkg/errors"
 )
 
 var (
@@ -39,7 +40,7 @@ func (s *accountStore) Save(account *entities.Account) (*entities.Account, error
 	}
 
 	s.accountStore[account.ID] = account
-	return &entities.Account{}, nil
+	return account, nil
 }
 
 func (s *accountStore) Get(id int) (*entities.Account, error) {
@@ -50,5 +51,5 @@ func (s *accountStore) Get(id int) (*entities.Account, error) {
 			return a, nil
 		}
 	}
-	return &entities.Account{}, ErrIdNotFound
+	return &entities.Account{}, erro.ErrIdNotFound
 }

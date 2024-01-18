@@ -16,6 +16,7 @@ const (
 type Handler interface {
 	ResetHandler(w http.ResponseWriter, r *http.Request)
 	EventHandler(w http.ResponseWriter, r *http.Request)
+	BalanceHandler(w http.ResponseWriter, r *http.Request)
 }
 
 type handler struct {
