@@ -6,7 +6,10 @@ import (
 )
 
 type AccountService interface {
-	CreateOrUpdateAccount(id int, initialBalance int) (entities.Account, error)
+	CreateOrUpdateAccount(id int, amount int) (*entities.Account, error)
+	Deposit(destAccID, amount int) (*entities.Account, error)
+	Transfer(originAccID, destAccID, amount int) (*entities.Account, *entities.Account, error)
+	Withdraw(destAccID, amount int) (*entities.Account, error)
 }
 
 type accountService struct {
