@@ -16,6 +16,7 @@ var (
 type AccountStore interface {
 	Save(*entities.Account) (*entities.Account, error)
 	Get(id int) (*entities.Account, error)
+	ResetAccountStates() error
 }
 
 type accountStore struct {
@@ -52,4 +53,12 @@ func (s *accountStore) Get(id int) (*entities.Account, error) {
 		}
 	}
 	return &entities.Account{}, erro.ErrIdNotFound
+}
+
+func (s *accountStore) ResetAccountStates() error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	s.accountStore = make(map[int]*entities.Account)
+	return nil
 }

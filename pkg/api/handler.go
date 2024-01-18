@@ -34,8 +34,3 @@ func (h *handler) SetupRoutes(router *mux.Router) {
 	router.HandleFunc("/event", h.EventHandler).Methods("POST")
 	router.HandleFunc("/balance/{account_id}", h.BalanceHandler).Methods("GET")
 }
-
-func (h *handler) ResetHandler(w http.ResponseWriter, r *http.Request) {
-
-	w.WriteHeader(http.StatusOK)
-}

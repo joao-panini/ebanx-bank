@@ -130,6 +130,7 @@ func handleWithdraw(h *handler, w http.ResponseWriter, req EventRequest) {
 		ID:      originAcc.ID,
 		Balance: originAcc.Balance,
 	}
+	w.Header().Set(ContentType, JSONContentType)
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(res)
 }
