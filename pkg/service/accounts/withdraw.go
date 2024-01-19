@@ -18,8 +18,8 @@ func (s *accountService) Withdraw(accountID int, amount int) (*entities.Account,
 
 	account.Balance -= amount
 	account = &entities.Account{
-		ID:      accountID,
-		Balance: amount,
+		ID:      account.ID,
+		Balance: account.Balance,
 	}
 	updatedAcc, err := s.accStore.Save(account)
 	if err != nil {
