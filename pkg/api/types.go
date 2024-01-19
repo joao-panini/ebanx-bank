@@ -23,6 +23,6 @@ type EventResponse struct {
 }
 
 type AccountResponse struct {
-	ID      int `json:"id,omitempty"`
-	Balance int `json:"balance,omitempty"`
+	ID      string `json:"id"`
+	Balance int    `json:"balance"`
 }

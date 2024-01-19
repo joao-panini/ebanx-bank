@@ -8,9 +8,10 @@ import (
 )
 
 const (
-	ContentType     = "Content-Type"
-	JSONContentType = "application/json"
-	DateLayout      = "2006-01-02T15:04:05Z"
+	ContentType          = "Content-Type"
+	JSONContentType      = "application/json"
+	PlainTextContentType = "text/plain"
+	DateLayout           = "2006-01-02T15:04:05Z"
 )
 
 type Handler interface {
@@ -32,5 +33,5 @@ func NewHandler(accountService accounts.AccountService) *handler {
 func (h *handler) SetupRoutes(router *mux.Router) {
 	router.HandleFunc("/reset", h.ResetHandler).Methods("POST")
 	router.HandleFunc("/event", h.EventHandler).Methods("POST")
-	router.HandleFunc("/balance/{account_id}", h.BalanceHandler).Methods("GET")
+	router.HandleFunc("/balance", h.BalanceHandler).Methods("GET")
 }

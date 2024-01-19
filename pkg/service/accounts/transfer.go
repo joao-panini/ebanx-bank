@@ -2,32 +2,33 @@ package accounts
 
 import (
 	"github.com/joao-panini/banking-ebanx/pkg/entities"
-	"github.com/joao-panini/banking-ebanx/pkg/errors"
+	erro "github.com/joao-panini/banking-ebanx/pkg/errors"
 )
 
 func (s *accountService) Transfer(originAccID, destinationAccID, amount int) (*entities.Account, *entities.Account, error) {
 	if amount <= 0 {
-		return &entities.Account{}, &entities.Account{}, errors.ErrInvalidAmount
+		return &entities.Account{}, &entities.Account{}, erro.ErrInvalidAmount
 	}
 
 	originAcc, err := s.accStore.Get(originAccID)
 	if err != nil {
-		return &entities.Account{}, &entities.Account{}, errors.ErrOriginAccNotFound
-	}
-
-	destAcc, err := s.accStore.Get(destinationAccID)
-	if err != nil {
-		return &entities.Account{}, &entities.Account{}, errors.ErrDestAccNotFound
+		return &entities.Account{}, &entities.Account{}, erro.ErrOriginAccNotFound
 	}
 
 	if originAcc.Balance < amount {
-		return &entities.Account{}, &entities.Account{}, errors.ErrInsufficientFunds
+		return &entities.Account{}, &entities.Account{}, err
 	}
 
-	originAcc.Balance -= amount
-	destAcc.Balance += amount
+	originAcc, err = s.Withdraw(originAcc.ID, amount)
+	if err != nil {
+		return &entities.Account{}, &entities.Account{}, err
+	}
 
-	s.accStore.Save(originAcc)
-	s.accStore.Save(destAcc)
+	destAcc, err := s.Deposit(destinationAccID, amount)
+	if err != nil {
+		return &entities.Account{}, &entities.Account{}, err
+	}
+
 	return originAcc, destAcc, nil
+
 }

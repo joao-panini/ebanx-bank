@@ -45,7 +45,7 @@ func handleDeposit(h *handler, w http.ResponseWriter, req EventRequest) {
 		return
 	}
 
-	account, err := h.accService.CreateOrUpdateAccount(accountDestIDInt, int(req.Amount))
+	account, err := h.accService.Deposit(accountDestIDInt, req.Amount)
 	if err != nil {
 		//never going to return err
 		return
@@ -53,7 +53,7 @@ func handleDeposit(h *handler, w http.ResponseWriter, req EventRequest) {
 
 	var res EventResponse
 	res.DestinationAcc = &AccountResponse{
-		ID:      account.ID,
+		ID:      strconv.Itoa(account.ID),
 		Balance: account.Balance,
 	}
 
@@ -71,7 +71,7 @@ func handleTransfer(h *handler, w http.ResponseWriter, req EventRequest) {
 	if err != nil {
 		return
 	}
-	origin, dest, err := h.accService.Transfer(accOriginIDInt, accDestIDInt, int(req.Amount))
+	origin, dest, err := h.accService.Transfer(accOriginIDInt, accDestIDInt, req.Amount)
 	if err != nil {
 		log.Printf("failed make transfer: %s\n", err.Error())
 		switch {
@@ -95,11 +95,11 @@ func handleTransfer(h *handler, w http.ResponseWriter, req EventRequest) {
 	}
 	var res EventResponse
 	res.DestinationAcc = &AccountResponse{
-		ID:      dest.ID,
+		ID:      strconv.Itoa(dest.ID),
 		Balance: dest.Balance,
 	}
 	res.OriginAcc = &AccountResponse{
-		ID:      origin.ID,
+		ID:      strconv.Itoa(origin.ID),
 		Balance: origin.Balance,
 	}
 	w.Header().Set(ContentType, JSONContentType)
@@ -120,7 +120,7 @@ func handleWithdraw(h *handler, w http.ResponseWriter, req EventRequest) {
 			w.WriteHeader(http.StatusBadRequest)
 			json.NewEncoder(w).Encode(0)
 		case errors.Is(err, erro.ErrInsufficientFunds):
-			w.WriteHeader(http.StatusPaymentRequired)
+			w.WriteHeader(http.StatusInsufficientStorage)
 			json.NewEncoder(w).Encode(0)
 		case errors.Is(err, erro.ErrOriginAccNotFound):
 			w.WriteHeader(http.StatusNotFound)
@@ -134,7 +134,7 @@ func handleWithdraw(h *handler, w http.ResponseWriter, req EventRequest) {
 	var res EventResponse
 
 	res.OriginAcc = &AccountResponse{
-		ID:      originAcc.ID,
+		ID:      strconv.Itoa(originAcc.ID),
 		Balance: originAcc.Balance,
 	}
 	w.Header().Set(ContentType, JSONContentType)
