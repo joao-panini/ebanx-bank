@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -15,6 +16,12 @@ func (h *handler) EventHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		http.Error(w, "Failed to parse JSON", http.StatusBadRequest)
+		return
+	}
+	err = validateEventRequestByType(EventType(req.Type), h, w, req)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(err.Error())
 		return
 	}
 
@@ -133,4 +140,57 @@ func handleWithdraw(h *handler, w http.ResponseWriter, req EventRequest) {
 	w.Header().Set(ContentType, JSONContentType)
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(res)
+}
+
+func validateEventRequestByType(tipo EventType, h *handler, w http.ResponseWriter, req EventRequest) error {
+	if EventType(tipo) != Deposit && EventType(tipo) != Withdraw && EventType(tipo) != Transfer {
+		response := fmt.Errorf("type %v not valid", tipo)
+		return response
+	}
+
+	if EventType(tipo) == Deposit {
+		if req.AccountDestId == "" {
+			response := fmt.Errorf("destination field required for event type :%v", tipo)
+			return response
+		}
+		if req.Amount == 0 {
+			response := fmt.Errorf("amount field required for event type :%v", tipo)
+			return response
+		}
+		if req.AccountOriginID != "" {
+			response := fmt.Errorf("origin field not required for event type :%v", tipo)
+			return response
+		}
+	}
+
+	if EventType(tipo) == Transfer {
+		if req.AccountOriginID == "" {
+			response := fmt.Errorf("origin field required for event type :%v", tipo)
+			return response
+		}
+		if req.AccountDestId == "" {
+			response := fmt.Errorf("destination field required for event type :%v", tipo)
+			return response
+		}
+		if req.Amount == 0 {
+			response := fmt.Errorf("amount field required for event type :%v", tipo)
+			return response
+		}
+	}
+
+	if EventType(tipo) == Withdraw {
+		if req.AccountOriginID == "" {
+			response := fmt.Errorf("origin field required for event type :%v", tipo)
+			return response
+		}
+		if req.Amount == 0 {
+			response := fmt.Errorf("amount field required for event type :%v", tipo)
+			return response
+		}
+		if req.AccountDestId != "" {
+			response := fmt.Errorf("origin field not required for event type :%v", tipo)
+			return response
+		}
+	}
+	return nil
 }

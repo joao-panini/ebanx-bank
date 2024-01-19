@@ -8,4 +8,6 @@ var (
 	ErrOriginAccNotFound = errors.New("account origin id not found")
 	ErrDestAccNotFound   = errors.New("account destination id not found")
 	ErrIdNotFound        = errors.New("account id not found")
+
+	ErrInvalidEventType = errors.New("invalid event type")
 )

@@ -1,5 +1,15 @@
 package api
 
+type EventType string
+
+const (
+	Deposit  EventType = "deposit"
+	Transfer EventType = "transfer"
+	Withdraw EventType = "withdraw"
+)
+
+var ValidEventTypes = [3]EventType{Deposit, Transfer, Withdraw}
+
 type EventRequest struct {
 	Type            string `json:"type" validate:"required,min=1"`
 	AccountOriginID string `json:"origin"`
