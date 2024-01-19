@@ -16,6 +16,7 @@ func (s *accountService) Withdraw(accountID int, amount int) (*entities.Account,
 		return &entities.Account{}, errors.ErrInsufficientFunds
 	}
 
+	account.Balance -= amount
 	account = &entities.Account{
 		ID:      accountID,
 		Balance: amount,
