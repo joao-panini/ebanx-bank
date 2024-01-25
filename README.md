@@ -7,10 +7,10 @@ This project is a test assigned by ebanx technical team.
 Depedencies: docker/docker-compose
 
 - [Introduction](#introduction)
-- [Features](#features)
+- [Challenge](#challenge)
 - [Installation](#installation)
 - [Usage](#usage)
-
+- [Testing](#testing)
 ## Introduction
 
 Banking like project to showcase knowledge.
@@ -93,9 +93,9 @@ POST /event {"type":"transfer", "origin":"200", "amount":15, "destination":"300"
 
 ## Instalation
 
-## Install docker
-
-run docker-compose up
+Install docker
+run docker-compose up --build
+url = localhost:8080/
 
 ## Usage
 
@@ -129,5 +129,9 @@ GET /balance?account_id=1
     "amount": 100
 }
 
-##W Reset Route Usage
+## Reset Route Usage
 POST /reset
+
+## Testing
+
+go test -v -c ./...
