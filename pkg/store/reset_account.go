@@ -1,6 +1,6 @@
 package store
 
-import "github.com/joao-panini/banking-ebanx/pkg/entities"
+import "github.com/joao-panini/ebanx-bank/pkg/entities"
 
 func (accountStore *accountStore) ResetAccountStates() error {
 	accountStore.mu.Lock()

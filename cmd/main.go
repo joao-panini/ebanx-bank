@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/joao-panini/banking-ebanx/pkg/api"
-	"github.com/joao-panini/banking-ebanx/pkg/store"
-	"github.com/joao-panini/banking-ebanx/pkg/usecases/accounts"
+	"github.com/joao-panini/ebanx-bank/pkg/api"
+	"github.com/joao-panini/ebanx-bank/pkg/store"
+	"github.com/joao-panini/ebanx-bank/pkg/usecases/accounts"
 )
 
 func main() {

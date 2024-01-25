@@ -1,8 +1,8 @@
 package accounts
 
 import (
-	"github.com/joao-panini/banking-ebanx/pkg/entities"
-	erro "github.com/joao-panini/banking-ebanx/pkg/errors"
+	"github.com/joao-panini/ebanx-bank/pkg/entities"
+	erro "github.com/joao-panini/ebanx-bank/pkg/errors"
 )
 
 func (accountUseCase *accountUseCase) Transfer(accountOriginID, accountDestinationID, amount int) (*entities.Account, *entities.Account, error) {
@@ -13,10 +13,6 @@ func (accountUseCase *accountUseCase) Transfer(accountOriginID, accountDestinati
 	accountOrigin, err := accountUseCase.accountStore.Get(accountOriginID)
 	if err != nil {
 		return &entities.Account{}, &entities.Account{}, erro.ErrOriginAccNotFound
-	}
-
-	if accountOrigin.Balance < amount {
-		return &entities.Account{}, &entities.Account{}, erro.ErrInsufficientFunds
 	}
 
 	accountOrigin, err = accountUseCase.Withdraw(accountOrigin.ID, amount)

@@ -1,8 +1,8 @@
 package accounts
 
 import (
-	"github.com/joao-panini/banking-ebanx/pkg/entities"
-	"github.com/joao-panini/banking-ebanx/pkg/store"
+	"github.com/joao-panini/ebanx-bank/pkg/entities"
+	"github.com/joao-panini/ebanx-bank/pkg/store"
 )
 
 type UseCase interface {

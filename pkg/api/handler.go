@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/joao-panini/banking-ebanx/pkg/usecases/accounts"
+	"github.com/joao-panini/ebanx-bank/pkg/usecases/accounts"
 )
 
 const (
@@ -24,9 +24,9 @@ type accountHandler struct {
 	accountUseCase accounts.UseCase
 }
 
-func NewHandler(accountService accounts.UseCase) *accountHandler {
+func NewHandler(accountUseCase accounts.UseCase) *accountHandler {
 	return &accountHandler{
-		accountUseCase: accountService,
+		accountUseCase: accountUseCase,
 	}
 }
 

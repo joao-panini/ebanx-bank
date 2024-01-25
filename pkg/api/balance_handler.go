@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	erros "github.com/joao-panini/banking-ebanx/pkg/errors"
+	erros "github.com/joao-panini/ebanx-bank/pkg/errors"
 )
 
 // Handler para a rota /balance

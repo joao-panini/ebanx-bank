@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/joao-panini/banking-ebanx/pkg/entities"
+	"github.com/joao-panini/ebanx-bank/pkg/entities"
 )
 
 var (

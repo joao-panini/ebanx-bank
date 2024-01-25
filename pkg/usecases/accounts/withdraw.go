@@ -1,12 +1,14 @@
 package accounts
 
 import (
-	"github.com/joao-panini/banking-ebanx/pkg/entities"
-	"github.com/joao-panini/banking-ebanx/pkg/errors"
+	"github.com/joao-panini/ebanx-bank/pkg/entities"
+	"github.com/joao-panini/ebanx-bank/pkg/errors"
 )
 
 func (accountUseCase *accountUseCase) Withdraw(accountID int, amount int) (*entities.Account, error) {
-
+	if amount < 0 {
+		return &entities.Account{}, errors.ErrInvalidAmount
+	}
 	account, err := accountUseCase.accountStore.Get(accountID)
 	if err != nil {
 		return &entities.Account{}, errors.ErrOriginAccNotFound

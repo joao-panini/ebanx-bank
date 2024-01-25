@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strconv"
 
-	erros "github.com/joao-panini/banking-ebanx/pkg/errors"
+	erros "github.com/joao-panini/ebanx-bank/pkg/errors"
 )
 
 // Handler da rota /event
@@ -43,7 +43,7 @@ func handleDeposit(accountHandler *accountHandler, writer http.ResponseWriter, r
 		return EventResponse{}, BadRequest, fmt.Errorf("erro convertendo account destination ID de string para int %writer", err)
 	}
 
-	account, err := accountHandler.accountUseCase.Deposit(accountDestIDInt, request.Amount)
+	accountDestination, err := accountHandler.accountUseCase.Deposit(accountDestIDInt, request.Amount)
 	if err != nil {
 		//never going to return err
 		return EventResponse{}, BadRequest, err
@@ -51,8 +51,8 @@ func handleDeposit(accountHandler *accountHandler, writer http.ResponseWriter, r
 
 	var response EventResponse
 	response.DestinationAcc = &AccountResponse{
-		ID:      strconv.Itoa(account.ID),
-		Balance: account.Balance,
+		ID:      strconv.Itoa(accountDestination.ID),
+		Balance: accountDestination.Balance,
 	}
 
 	return response, Created, nil

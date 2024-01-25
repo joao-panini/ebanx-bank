@@ -1,8 +1,8 @@
 package accounts
 
 import (
-	"github.com/joao-panini/banking-ebanx/pkg/entities"
-	"github.com/joao-panini/banking-ebanx/pkg/errors"
+	"github.com/joao-panini/ebanx-bank/pkg/entities"
+	"github.com/joao-panini/ebanx-bank/pkg/errors"
 )
 
 func (accountUseCase *accountUseCase) Deposit(accountID int, amount int) (*entities.Account, error) {
@@ -10,7 +10,7 @@ func (accountUseCase *accountUseCase) Deposit(accountID int, amount int) (*entit
 		return &entities.Account{}, errors.ErrInvalidAmount
 	}
 
-	account, err := accountUseCase.accountStore.Get(accountID)
+	account, err := accountUseCase.GetBalance(accountID)
 	if err != nil {
 		//Account not found, create new one
 		newAcc := &entities.Account{

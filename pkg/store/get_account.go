@@ -1,8 +1,8 @@
 package store
 
 import (
-	"github.com/joao-panini/banking-ebanx/pkg/entities"
-	"github.com/joao-panini/banking-ebanx/pkg/errors"
+	"github.com/joao-panini/ebanx-bank/pkg/entities"
+	"github.com/joao-panini/ebanx-bank/pkg/errors"
 )
 
 func (accountStore *accountStore) Get(id int) (*entities.Account, error) {

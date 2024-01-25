@@ -1,6 +1,6 @@
 package store
 
-import "github.com/joao-panini/banking-ebanx/pkg/entities"
+import "github.com/joao-panini/ebanx-bank/pkg/entities"
 
 func (accountStore *accountStore) Save(account *entities.Account) (*entities.Account, error) {
 	// Should implement database transaction here, to ensure that if any error occurs, all changes are rolled back
