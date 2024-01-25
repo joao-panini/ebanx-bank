@@ -10,6 +10,7 @@ import (
 	erros "github.com/joao-panini/ebanx-bank/pkg/errors"
 )
 
+// *TODO Add context to routes
 // Handler para a rota /balance
 func (accountHandler *accountHandler) BalanceHandler(writer http.ResponseWriter, request *http.Request) {
 	// Get account_id from URL

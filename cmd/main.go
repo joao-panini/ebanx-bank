@@ -13,9 +13,11 @@ import (
 func main() {
 	// Instancia o router
 	accountRouter := mux.NewRouter()
-	//
+	// Instancia uma store de account
 	accountStore := store.NewAccountStore()
+	// Instancia UseCases de account
 	accountUseCase := accounts.NewAccountUseCase(accountStore)
+	// Inicia Handlers de account
 	accountHandlers := api.NewHandler(accountUseCase)
 
 	accountHandlers.SetupRoutes(accountRouter)

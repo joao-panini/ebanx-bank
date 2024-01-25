@@ -1,11 +1,11 @@
 # Use the official Golang image as the base image
-FROM golang:latest
+FROM golang:1.21.5-alpine
 
 # Set the working directory inside the container
-WORKDIR /go/src/app
+WORKDIR /app
 
 # Copy the Go module files
-COPY go.mod go.sum ./
+COPY go.mod ./
 
 # Download and install Go module dependencies
 RUN go mod download
