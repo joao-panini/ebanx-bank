@@ -5,19 +5,19 @@ import (
 	"github.com/joao-panini/banking-ebanx/pkg/errors"
 )
 
-func (s *accountService) Deposit(accountID int, amount int) (*entities.Account, error) {
+func (accountUseCase *accountUseCase) Deposit(accountID int, amount int) (*entities.Account, error) {
 	if amount < 0 {
 		return &entities.Account{}, errors.ErrInvalidAmount
 	}
 
-	account, err := s.accStore.Get(accountID)
+	account, err := accountUseCase.accountStore.Get(accountID)
 	if err != nil {
 		//Account not found, create new one
 		newAcc := &entities.Account{
 			ID:      accountID,
 			Balance: amount,
 		}
-		savedAcc, err := s.accStore.Save(newAcc)
+		savedAcc, err := accountUseCase.accountStore.Save(newAcc)
 		if err != nil {
 			return &entities.Account{}, err
 		}
@@ -25,7 +25,7 @@ func (s *accountService) Deposit(accountID int, amount int) (*entities.Account, 
 	}
 
 	account.Balance += amount
-	updatedAcc, err := s.accStore.Save(account)
+	updatedAcc, err := accountUseCase.accountStore.Save(account)
 	if err != nil {
 		return &entities.Account{}, err
 	}

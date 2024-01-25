@@ -1,5 +1,9 @@
 package api
 
+import (
+	"net/http"
+)
+
 type EventType string
 
 const (
@@ -8,10 +12,23 @@ const (
 	Withdraw EventType = "withdraw"
 )
 
-var ValidEventTypes = [3]EventType{Deposit, Transfer, Withdraw}
+var (
+	//HTTP STATUS CODE 400
+	BadRequest = http.StatusBadRequest
+	//HTTP STATUS CODE 404
+	NotFound = http.StatusNotFound
+	//HTTP STATUS CODE 500
+	InternalServerError = http.StatusInternalServerError
+	Created             = http.StatusCreated
+
+	//Test suit requires 0 as int when returning error from account balance
+	defaultErrorResponse = 0
+	//Tipos validos de evento
+	ValidEventTypes = [3]EventType{Deposit, Transfer, Withdraw}
+)
 
 type EventRequest struct {
-	Type            string `json:"type" validate:"required,min=1"`
+	Type            string `json:"type"`
 	AccountOriginID string `json:"origin"`
 	AccountDestId   string `json:"destination"`
 	Amount          int    `json:"amount" validate:"required,min=0"`

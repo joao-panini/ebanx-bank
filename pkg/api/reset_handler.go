@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"net/http"
 )
 
@@ -9,15 +8,14 @@ type Response struct {
 	OK bool
 }
 
-func (h *handler) ResetHandler(w http.ResponseWriter, r *http.Request) {
+// Handler da rota /reset
+func (accountHandler *accountHandler) ResetHandler(writer http.ResponseWriter, request *http.Request) {
 
-	err := h.accService.ResetAccountStates()
+	err := accountHandler.accountUseCase.ResetAccountStates()
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(0)
+		http.Error(writer, err.Error(), InternalServerError)
 	}
 
-	w.Header().Set(ContentType, PlainTextContentType)
-	w.Write([]byte("OK"))
-
+	writer.Header().Set(ContentType, PlainTextContentType)
+	writer.Write([]byte("OK"))
 }

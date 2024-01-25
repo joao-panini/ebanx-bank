@@ -5,7 +5,7 @@ import (
 	"github.com/joao-panini/banking-ebanx/pkg/store"
 )
 
-type AccountService interface {
+type UseCase interface {
 	Deposit(destAccID, amount int) (*entities.Account, error)
 	Transfer(originAccID, destAccID, amount int) (*entities.Account, *entities.Account, error)
 	Withdraw(destAccID, amount int) (*entities.Account, error)
@@ -13,12 +13,12 @@ type AccountService interface {
 	ResetAccountStates() error
 }
 
-type accountService struct {
-	accStore store.AccountStore
+type accountUseCase struct {
+	accountStore store.AccountStore
 }
 
-func NewAccountService(store store.AccountStore) *accountService {
-	return &accountService{
-		accStore: store,
+func NewAccountUseCase(accountStore store.AccountStore) *accountUseCase {
+	return &accountUseCase{
+		accountStore: accountStore,
 	}
 }

@@ -5,8 +5,8 @@ import (
 	"github.com/joao-panini/banking-ebanx/pkg/errors"
 )
 
-func (s *accountService) GetBalance(accountID int) (*entities.Account, error) {
-	account, err := s.accStore.Get(accountID)
+func (accountUseCase *accountUseCase) GetBalance(accountID int) (*entities.Account, error) {
+	account, err := accountUseCase.accountStore.Get(accountID)
 	if err != nil {
 		return &entities.Account{}, errors.ErrOriginAccNotFound
 	}

@@ -9,5 +9,8 @@ var (
 	ErrDestAccNotFound   = errors.New("account destination id not found")
 	ErrIdNotFound        = errors.New("account id not found")
 
-	ErrInvalidEventType = errors.New("invalid event type")
+	ErrInvalidEventType       = errors.New("invalid event type")
+	ErrAccountIDParamRequired = errors.New("missing account_id url parameter")
+	ErrAccountIDParamInvalid  = errors.New("invalid account_id parameter")
+	ErrTypeNotValid           = errors.New("invalid operation type")
 )

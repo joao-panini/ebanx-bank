@@ -6,16 +6,18 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joao-panini/banking-ebanx/pkg/api"
-	"github.com/joao-panini/banking-ebanx/pkg/service/accounts"
 	"github.com/joao-panini/banking-ebanx/pkg/store"
+	"github.com/joao-panini/banking-ebanx/pkg/usecase/accounts"
 )
 
 func main() {
-	router := mux.NewRouter()
-	store := store.NewAccountStore()
-	service := accounts.NewAccountService(store)
-	handlers := api.NewHandler(service)
+	// Instancia o router
+	accountRouter := mux.NewRouter()
+	//
+	accountStore := store.NewAccountStore()
+	accountUseCase := accounts.NewAccountUseCase(accountStore)
+	accountHandlers := api.NewHandler(accountUseCase)
 
-	handlers.SetupRoutes(router)
-	log.Fatal(http.ListenAndServe(":8080", router))
+	accountHandlers.SetupRoutes(accountRouter)
+	log.Fatal(http.ListenAndServe(":8080", accountRouter))
 }

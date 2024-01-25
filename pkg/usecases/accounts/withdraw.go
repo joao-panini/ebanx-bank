@@ -5,9 +5,9 @@ import (
 	"github.com/joao-panini/banking-ebanx/pkg/errors"
 )
 
-func (s *accountService) Withdraw(accountID int, amount int) (*entities.Account, error) {
+func (accountUseCase *accountUseCase) Withdraw(accountID int, amount int) (*entities.Account, error) {
 
-	account, err := s.accStore.Get(accountID)
+	account, err := accountUseCase.accountStore.Get(accountID)
 	if err != nil {
 		return &entities.Account{}, errors.ErrOriginAccNotFound
 	}
@@ -21,7 +21,7 @@ func (s *accountService) Withdraw(accountID int, amount int) (*entities.Account,
 		ID:      account.ID,
 		Balance: account.Balance,
 	}
-	updatedAcc, err := s.accStore.Save(account)
+	updatedAcc, err := accountUseCase.accountStore.Save(account)
 	if err != nil {
 		return &entities.Account{}, err
 	}

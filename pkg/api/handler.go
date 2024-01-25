@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/joao-panini/banking-ebanx/pkg/service/accounts"
+	"github.com/joao-panini/banking-ebanx/pkg/usecases/accounts"
 )
 
 const (
@@ -14,24 +14,24 @@ const (
 	DateLayout           = "2006-01-02T15:04:05Z"
 )
 
-type Handler interface {
-	ResetHandler(w http.ResponseWriter, r *http.Request)
-	EventHandler(w http.ResponseWriter, r *http.Request)
-	BalanceHandler(w http.ResponseWriter, r *http.Request)
+type AccountHandler interface {
+	ResetHandler(writer http.ResponseWriter, request *http.Request)
+	EventHandler(writer http.ResponseWriter, request *http.Request)
+	BalanceHandler(writer http.ResponseWriter, request *http.Request)
 }
 
-type handler struct {
-	accService accounts.AccountService
+type accountHandler struct {
+	accountUseCase accounts.UseCase
 }
 
-func NewHandler(accountService accounts.AccountService) *handler {
-	return &handler{
-		accService: accountService,
+func NewHandler(accountService accounts.UseCase) *accountHandler {
+	return &accountHandler{
+		accountUseCase: accountService,
 	}
 }
 
-func (h *handler) SetupRoutes(router *mux.Router) {
-	router.HandleFunc("/reset", h.ResetHandler).Methods("POST")
-	router.HandleFunc("/event", h.EventHandler).Methods("POST")
-	router.HandleFunc("/balance", h.BalanceHandler).Methods("GET")
+func (accountHandler *accountHandler) SetupRoutes(router *mux.Router) {
+	router.HandleFunc("/reset", accountHandler.ResetHandler).Methods("POST")
+	router.HandleFunc("/event", accountHandler.EventHandler).Methods("POST")
+	router.HandleFunc("/balance", accountHandler.BalanceHandler).Methods("GET")
 }
