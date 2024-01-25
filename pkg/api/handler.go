@@ -24,7 +24,7 @@ type accountHandler struct {
 	accountUseCase accounts.UseCase
 }
 
-func NewHandler(accountUseCase accounts.UseCase) *accountHandler {
+func NewAccountHandler(accountUseCase accounts.UseCase) *accountHandler {
 	return &accountHandler{
 		accountUseCase: accountUseCase,
 	}

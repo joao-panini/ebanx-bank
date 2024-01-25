@@ -18,7 +18,7 @@ func main() {
 	// Instancia UseCases de account
 	accountUseCase := accounts.NewAccountUseCase(accountStore)
 	// Inicia Handlers de account
-	accountHandlers := api.NewHandler(accountUseCase)
+	accountHandlers := api.NewAccountHandler(accountUseCase)
 
 	accountHandlers.SetupRoutes(accountRouter)
 	log.Fatal(http.ListenAndServe(":8080", accountRouter))
